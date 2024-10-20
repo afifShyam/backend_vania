@@ -5,7 +5,13 @@ class CreateUserTable extends Migration {
   Future<void> up() async {
     super.up();
     await createTableNotExists('users', () {
-      id();
+      bigIncrements('users_id');
+      char('username', length: 30, zeroFill: false);
+      longText('password', zeroFill: false);
+      char('email', length: 30, zeroFill: false);
+      binary('profile_image', nullable: true);
+      dateTime('created_at');
+      dateTime('updated_at', nullable: true);
     });
   }
 
