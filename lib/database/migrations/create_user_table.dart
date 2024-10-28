@@ -7,11 +7,11 @@ class CreateUserTable extends Migration {
     await createTableNotExists('users', () {
       bigIncrements('users_id');
       char('username', length: 30, zeroFill: false);
-      longText('password', zeroFill: false);
+      text('password', zeroFill: false);
       char('email', length: 30, zeroFill: false);
       binary('profile_image', nullable: true);
-      dateTime('created_at');
-      dateTime('updated_at', nullable: true);
+      timeStamp('created_at');
+      timeStamp('updated_at', nullable: true);
     });
   }
 

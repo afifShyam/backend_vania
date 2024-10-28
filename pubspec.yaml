@@ -10,6 +10,7 @@ dependencies:
   vania: ^0.5.0
   crypto: ^3.0.6
   dart_jsonwebtoken: ^2.14.1
+  dotenv: ^4.2.0
 
 
 dev_dependencies:

@@ -1,8 +1,10 @@
 // ignore: implementation_imports
-import 'package:vania/src/exception/validation_exception.dart';
-
+import 'dart:developer';
 import 'dart:io';
+
+import 'package:vania/src/exception/validation_exception.dart';
 import 'package:vania/vania.dart';
+
 import 'package:backend_vania/app/models/user.dart';
 
 class AuthController extends Controller {
@@ -15,12 +17,15 @@ class AuthController extends Controller {
       });
     } catch (e) {
       if (e is ValidationException) {
+        log('wrong');
         String errorMessage = e.message;
         int code = e.code;
         return Response.json({"message": errorMessage, "result": false}, code);
       } else {
         return Response.json(
-            {"message": "unknown error", "result": false}, 520);
+          {"message": "unknown error", "result": false},
+          520,
+        );
       }
     }
 

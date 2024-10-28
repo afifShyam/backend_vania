@@ -11,7 +11,10 @@ class RequestsLogTable extends Migration {
       timeStamp('requested_at', defaultValue: DateTime.now().toString());
 
       // Foreign key constraint linking user_id in requests_log to id in users table
-      foreign('user_id', 'users', 'user_id',
+      //columnName is current column name table
+      //referencesTable is table name want to link
+      //referencesColumn is column name want to link
+      foreign('user_id', 'users', 'users_id',
           onDelete: 'CASCADE', onUpdate: 'CASCADE');
     });
   }
