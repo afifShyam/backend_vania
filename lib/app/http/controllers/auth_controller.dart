@@ -1,29 +1,35 @@
 // ignore: implementation_imports
 import 'dart:developer';
+
+import 'package:backend_vania/services/index.dart';
+import 'package:vania/src/exception/validation_exception.dart';
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:vania/src/exception/validation_exception.dart';
 import 'package:vania/vania.dart';
-
-import 'package:backend_vania/app/models/user.dart';
+import 'package:backend_vania/app/models/index.dart';
 
 class AuthController extends Controller {
   Future<Response> register(Request request) async {
     try {
-      request.validate({
-        'username': 'required|string',
-        'password': 'required|string',
-        'email': 'required|email'
-      });
+      request.validate(
+        {
+          'username': 'required|string',
+          'password': 'required|min_length:6',
+          'email': 'required|email'
+        },
+      );
     } catch (e) {
       if (e is ValidationException) {
-        log('wrong');
-        String errorMessage = e.message;
-        int code = e.code;
-        return Response.json({"message": errorMessage, "result": false}, code);
+        return Response.json(
+          {
+            'error': e.message,
+          },
+          e.code,
+        );
       } else {
         return Response.json(
-          {"message": "unknown error", "result": false},
+          {'message': 'unknown error'},
           520,
         );
       }
@@ -31,18 +37,26 @@ class AuthController extends Controller {
 
     try {
       final username = request.input('username');
-      final hashPassword = Hash().make(request.input('password'));
+      final password = request.string('password');
+      final hashPassword = Hash().make(password);
       final email = request.input('email');
 
-      final user =
-          await User().query().where('username', '=?', [username]).first();
+      final userValidata =
+          await User().query().where('username', '=', [username]).first();
 
-      if (user != null) {
+      final emailValidate =
+          await User().query().where('email', '=', [email]).first();
+
+      if (userValidata != null) {
         return Response.json(
-          {
-            'message': 'User already exists, please choose another username',
-            'result': false
-          },
+          {'Error': 'User already exists, Please choose another username'},
+          HttpStatus.badRequest,
+        );
+      }
+
+      if (emailValidate != null) {
+        return Response.json(
+          {'Error': 'Email already exists, Please choose another email'},
           HttpStatus.badRequest,
         );
       }
@@ -55,12 +69,23 @@ class AuthController extends Controller {
       });
 
       return Response.json(
-        {'Message': 'User Successful Register'},
+        {
+          'message': 'User Successfully Registered',
+          'data': [
+            {
+              'username': username,
+              'email': email,
+              'password': password,
+            }
+          ],
+        },
         HttpStatus.ok,
       );
     } catch (e) {
       return Response.json(
-        {"message": "unknown error", "result": false},
+        {
+          'Error': '$e,',
+        },
         HttpStatus.badGateway,
       );
     }
@@ -71,57 +96,75 @@ class AuthController extends Controller {
       req.validate(
         {
           'username': 'required|string',
-          'password': 'required|string',
+          'password': 'required|min_length:6',
         },
       );
     } catch (e) {
       if (e is ValidationException) {
-        String errorMessage = e.message;
-        int code = e.code;
-        return Response.json({"message": errorMessage, "result": false}, code);
+        return Response.json(
+          {
+            'message': e.message,
+          },
+          e.code,
+        );
       } else {
         return Response.json(
-            {"message": "unknown error", "result": false}, 520);
+          {
+            'Error': 'unknown error',
+          },
+          520,
+        );
       }
     }
 
     try {
-      final username = req.input('username');
-      final password = req.input('password');
+      final username = req.string('username');
+      final password = req.string('password');
 
-      final user = await User()
-          .query()
-          .select(['*']).where('username', '=?', [username]).first();
+      final user =
+          await User().query().where('username', '=', [username]).first();
 
       if (user == null) {
         return Response.json(
-          {'message': 'User not found', 'result': false},
+          {
+            'message': 'User not found',
+          },
           HttpStatus.notFound,
         );
       }
 
-      if (!Hash().verify(password, user['password'])) {
+      if (!Hash().verify(password, user['password'].replaceAll(' ', ''))) {
         return Response.json(
-          {'message': 'Wrong password', 'result': false},
+          {
+            'message': 'Wrong password',
+          },
           HttpStatus.unauthorized,
         );
       } else {
-        final auth = Auth().login(user);
-        final token = await auth.createToken(expiresIn: Duration(days: 62));
+        final token = AuthUtils.createToken(user['users_id'].toString());
+
+        // Remove sensitive information from user and convert DateTime fields if necessary
         user.removeWhere((key, value) => key == 'password');
+
         return Response.json(
           {
             'message': 'Login Successful',
-            'result': true,
-            'token': token['access_token'],
-            'user': user
+            'data': [
+              {
+                'token': token,
+                'username': user['username'].replaceAll(' ', ''),
+                'email': user['email'].replaceAll(' ', ''),
+              }
+            ],
           },
           HttpStatus.ok,
         );
       }
     } catch (e) {
       return Response.json(
-        {"message": "unknown error", "result": false},
+        {
+          'Error': '$e',
+        },
         HttpStatus.badGateway,
       );
     }

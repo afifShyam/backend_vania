@@ -6,6 +6,7 @@ class UserRoute implements Route {
   void register() {
     Router.basePrefix('users');
 
-    Router.get("/register", authController.register);
+    Router.post("/register", authController.register);
+    Router.post("/login", authController.login);
   }
 }

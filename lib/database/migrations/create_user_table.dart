@@ -6,7 +6,7 @@ class CreateUserTable extends Migration {
     super.up();
     await createTableNotExists('users', () {
       bigIncrements('users_id');
-      char('username', length: 30, zeroFill: false);
+      text('username', zeroFill: false);
       text('password', zeroFill: false);
       char('email', length: 30, zeroFill: false);
       binary('profile_image', nullable: true);

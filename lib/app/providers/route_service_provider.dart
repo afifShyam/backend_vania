@@ -1,3 +1,4 @@
+import 'package:backend_vania/route/user_route.dart';
 import 'package:vania/vania.dart';
 import 'package:backend_vania/route/api_route.dart';
 import 'package:backend_vania/route/web.dart';
@@ -14,6 +15,7 @@ class RouteServiceProvider extends ServiceProvider {
   Future<void> register() async {
     WebRoute().register();
     ApiRoute().register();
+    UserRoute().register();
     WebSocketRoute().register();
   }
 }

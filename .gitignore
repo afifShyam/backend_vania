@@ -4,3 +4,6 @@
 
 # Created by `Android Studio idea`
 .idea/.env
+
+#ignore for secret keys
+lib/services/auth_utils.dart
