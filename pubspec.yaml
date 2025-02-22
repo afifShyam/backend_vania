@@ -7,15 +7,15 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  vania: ^0.5.1
+  vania: ^0.8.2+1
   crypto: ^3.0.6
   dart_jsonwebtoken: ^2.14.1
   dotenv: ^4.2.0
 
 
 dev_dependencies:
-  lints: ^2.1.1
-  test: ^1.25.8
+  lints: ^5.0.0
+  test: ^1.25.9
 
 dependency_overrides:
-  pointycastle: 3.7.3
+  pointycastle: 4.0.0

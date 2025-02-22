@@ -147,13 +147,11 @@ class AuthController extends Controller {
         return Response.json(
           {
             'message': 'Login Successful',
-            'data': [
-              {
-                'token': token,
-                'username': user['username'].replaceAll(' ', ''),
-                'email': user['email'].replaceAll(' ', ''),
-              }
-            ],
+            'data': {
+              'token': token,
+              'username': user['username'].replaceAll(' ', ''),
+              'email': user['email'].replaceAll(' ', ''),
+            }
           },
           HttpStatus.ok,
         );
