@@ -6,11 +6,15 @@ class WeatherTable extends Migration {
     super.up();
     await createTableNotExists('weather_table', () {
       bigIncrements('weather_id', nullable: false);
-      char('city', length: 100);
-      decimal('temperature', precision: 2, scale: 1);
+      integer('location_id', nullable: false);
+      decimal('temperature', precision: 5, scale: 2);
       integer('humidity');
-      char('weather_description', length: 255);
+      decimal('rainfall', precision: 5, scale: 2);
+      string('weather_description', length: 255);
+      decimal('temp_max', precision: 5, scale: 2);
+      decimal('temp_min', precision: 5, scale: 2);
       timeStamp('recorded_at');
+      foreign('location_id', 'location', 'location_id', onDelete: 'CASCADE', onUpdate: 'CASCADE');
     });
   }
 

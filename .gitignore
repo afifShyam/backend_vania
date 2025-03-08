@@ -2,9 +2,6 @@
 # Created by `dart pub`
 .dart_tool/
 
-#ignore for secret keys
-lib/services/auth_utils.dart
-
 # Created by `Android Studio idea`
 .idea/.env
 .env

@@ -16,13 +16,15 @@ void main(List<String> args) async {
 class Migrate {
   registry() async {
     await CreateUserTable().up();
-    await WeatherTable().up();
     await RequestsLogTable().up();
+    await LocationTable().up();
+    await WeatherTable().up();
   }
 
   dropTables() async {
     await CreateUserTable().down();
-    await WeatherTable().down();
     await RequestsLogTable().down();
+    await LocationTable().down();
+    await WeatherTable().down();
   }
 }
