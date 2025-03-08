@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:vania/vania.dart';
 import 'package:backend_vania/services/index.dart';
@@ -22,6 +23,9 @@ class ValidUser extends Middleware {
     final authenticatedUserId = decodedToken['userId'];
 
     final requestedUserId = requestId['userId'];
+
+    log('Authenticated User ID: $authenticatedUserId');
+    log('Requested User ID: $requestedUserId');
 
     if (requestedUserId == null || requestedUserId != authenticatedUserId) {
       throw HttpResponseException(

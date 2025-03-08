@@ -1,11 +1,7 @@
-// ignore: implementation_imports
-import 'package:vania/src/exception/validation_exception.dart';
 import 'package:backend_vania/services/index.dart';
 import 'dart:io';
 import 'package:vania/vania.dart';
 import 'package:backend_vania/app/models/index.dart';
-
-//Request is what the user input
 
 class AuthController extends Controller {
   Future<Response> register(Request request) async {
