@@ -8,7 +8,6 @@ class CreateUserTable extends Migration {
       bigIncrements('users_id');
       text('username', zeroFill: false);
       text('password', zeroFill: false);
-      char('phone_number', length: 15, zeroFill: false);
       char('email', length: 30, zeroFill: false);
       binary('profile_image', nullable: true);
       timeStamp('created_at');
@@ -18,7 +17,7 @@ class CreateUserTable extends Migration {
 
   @override
   Future<void> down() async {
-    super.down();
     await dropIfExists('users');
+    super.down();
   }
 }

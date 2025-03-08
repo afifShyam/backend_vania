@@ -9,6 +9,7 @@ Map<String, dynamic> config = {
   'url': env('APP_URL'),
   'cors': cors,
   'auth': authConfig,
+  'csrf_except': ['*', 'user/*'],
   'providers': <ServiceProvider>[
     RouteServiceProvider(),
   ],

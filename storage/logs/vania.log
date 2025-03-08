@@ -13,3 +13,11 @@
 [2024-11-28 10:17:58] ERROR: type 'Null' is not a subtype of type 'FutureOr<Response>'
 [2024-11-28 10:18:02] ERROR: type 'Null' is not a subtype of type 'FutureOr<Response>'
 [2024-11-28 10:18:08] ERROR: type 'Null' is not a subtype of type 'FutureOr<Response>'
+[2025-03-08 14:10:27] ERROR: HttpException: Wrong token
+[2025-03-08 14:12:41] ERROR: HttpException: Wrong token, uri = /users/profile/5
+[2025-03-08 14:12:51] ERROR: HttpException: Wrong token, uri = /users/profile/5
+[2025-03-08 14:14:56] ERROR: HttpException: Wrong token, uri = /users/profile/5
+[2025-03-08 14:15:12] ERROR: Instance of 'Response'
+[2025-03-08 14:15:19] ERROR: Instance of 'Response'
+[2025-03-08 14:17:12] ERROR: uthorized
+[2025-03-08 14:17:21] ERROR: uthorized
