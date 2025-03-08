@@ -1,38 +1,23 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:backend_vania/services/index.dart';
 import 'package:vania/vania.dart';
 
 class AuthenticateMiddleware extends Middleware {
   @override
-  Future<Response> handle(Request req) async {
+  Future handle(Request req) async {
     String? token = req.header('authorization')?.replaceFirst('Bearer ', '');
-
-    if (token != null || (token ?? '').isNotEmpty) {
-      log(
-        'message: token is not null:',
+    if (token == null || token.isEmpty) {
+      throw HttpResponseException(
+        message: 'Unauthorized',
+        code: 401,
       );
-      return Response.json({
-        'message': 'Unauthorized',
-      }, 401);
     }
-
-    try {
-      AuthUtils.verifyToken(token!);
-      return Response.json({
-        'message': 'Unauthorized',
-        'token': token,
-      }, 401);
-    } catch (e) {
-      return Response.json({
-        'message': 'Unauthorized',
-      }, 401);
+    if (AuthUtils.verifyToken(token) == false) {
+      throw HttpResponseException(
+        message: 'Invalid token',
+        code: 401,
+      );
     }
-    // ignore: deprecated_member_use
-    // return await next?.handle(req);
-    // return Response.json({
-    //   'message': 'Unauthorized',
-    // }, 401);
   }
 }

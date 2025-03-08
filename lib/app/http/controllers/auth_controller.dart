@@ -9,29 +9,18 @@ import 'package:backend_vania/app/models/index.dart';
 
 class AuthController extends Controller {
   Future<Response> register(Request request) async {
-    try {
-      request.validate(
-        {
-          'username': 'required|string',
-          'password': 'required|min_length:6',
-          'email': 'required|email'
-        },
-      );
-    } catch (e) {
-      if (e is ValidationException) {
-        return Response.json(
-          {
-            'error': e.message,
-          },
-          e.code,
-        );
-      } else {
-        return Response.json(
-          {'message': 'unknown error'},
-          520,
-        );
-      }
-    }
+    await request.validate({
+      'username': 'required|string',
+      'password': 'required|min_length:6',
+      'email': 'required|email'
+    }, {
+      'username.required': 'Username is required',
+      'username.string': 'Username must be a string',
+      'password.required': 'Password is required',
+      'password.min_length': 'Password must be at least 6 characters long',
+      'email.required': 'Email is required',
+      'email.email': 'Invalid email format'
+    });
 
     try {
       final username = request.input('username');
@@ -39,11 +28,9 @@ class AuthController extends Controller {
       final hashPassword = Hash().make(password);
       final email = request.input('email');
 
-      final userValidata =
-          await User().query().where('username', '=', [username]).first();
+      final userValidata = await User().query().where('username', '=', [username]).first();
 
-      final emailValidate =
-          await User().query().where('email', '=', [email]).first();
+      final emailValidate = await User().query().where('email', '=', [email]).first();
 
       if (userValidata != null) {
         return Response.json(
@@ -90,37 +77,24 @@ class AuthController extends Controller {
   }
 
   Future<Response> login(Request req) async {
-    try {
-      req.validate(
-        {
-          'username': 'required|string',
-          'password': 'required|min_length:6',
-        },
-      );
-    } catch (e) {
-      if (e is ValidationException) {
-        return Response.json(
-          {
-            'message': e.message,
-          },
-          e.code,
-        );
-      } else {
-        return Response.json(
-          {
-            'Error': 'unknown error',
-          },
-          520,
-        );
-      }
-    }
+    await req.validate(
+      {
+        'username': 'required|string',
+        'password': 'required|min_length:6',
+      },
+      {
+        'username.required': 'Username is required',
+        'username.string': 'Username must be a string',
+        'password.required': 'Password is required',
+        'password.min_length': 'Password must be at least 6 characters long',
+      },
+    );
 
     try {
       final username = req.string('username');
       final password = req.string('password');
 
-      final user =
-          await User().query().where('username', '=', [username]).first();
+      final user = await User().query().where('username', '=', [username]).first();
 
       if (user == null) {
         return Response.json(

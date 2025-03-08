@@ -1,11 +1,11 @@
 // ignore: implementation_imports
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:vania/src/exception/validation_exception.dart';
-
-import 'dart:io';
-import 'package:backend_vania/app/models/index.dart';
 import 'package:vania/vania.dart';
+
+import 'package:backend_vania/app/models/index.dart';
 
 class UserProfileController extends Controller {
   Future<Response> update(Request request, int userId) async {
