@@ -1,9 +1,7 @@
 import 'package:vania/vania.dart';
 
-class Location extends Model{
-    
-  Location(){
+class LocationModel extends Model {
+  LocationModel() {
     super.table('location');
   }
-
 }

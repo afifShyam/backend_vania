@@ -27,11 +27,24 @@ class ValidUser extends Middleware {
     log('Authenticated User ID: $authenticatedUserId');
     log('Requested User ID: $requestedUserId');
 
-    if (requestedUserId == null || requestedUserId != authenticatedUserId) {
+    Gate().define('edit-profile', () {
+      return requestedUserId == authenticatedUserId;
+    });
+
+    if (Gate().allows('edit-profile')) {
+      return;
+    } else {
       throw HttpResponseException(
         message: 'You can only edit your own profile',
         code: 403,
       );
     }
+
+    // if (requestedUserId == null || requestedUserId != authenticatedUserId) {
+    //   throw HttpResponseException(
+    //     message: 'You can only edit your own profile',
+    //     code: 403,
+    //   );
+    // }
   }
 }

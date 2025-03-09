@@ -5,9 +5,9 @@ class LocationTable extends Migration {
   Future<void> up() async {
     super.up();
     await createTableNotExists('location', () {
-      bigIncrements('location_id', nullable: false);
+      bigIncrements('location_id');
       char('city', length: 100, nullable: false);
-      char('country', length: 100, nullable: false);
+      char('state', length: 100, nullable: false);
       decimal('latitude', precision: 9, scale: 6);
       decimal('longitude', precision: 9, scale: 6);
     });
